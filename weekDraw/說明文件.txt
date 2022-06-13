@@ -1,0 +1,146 @@
+1. 下載相關套件requirements.txt
+2. 搭建框架
+    創建基本文件夾
+        django-admin startproject drawWeek
+        cd drawWeek
+            __init__.py 是一個空文件，指示 Python 將此目錄視為 Python 套件。
+            settings.py  包含所有的網站設置。這是可以註冊所有創建的應用的地方，也是靜態文件，數據庫配置的地方，等等。
+            urls.py定義了網站url到view的映射。雖然這裡可以包含所有的url，但是更常見的做法是把應用相關的url包含在相關應用中，你可以在接下來的教程裡看到。
+            wsgi.py  幫助Django應用和網絡服務器間的通訊。你可以把這個當作模板。(web|mdn)
+    使用manage.py腳本可以創建應用，和資料庫通訊，啟動開發用網絡服務器。
+        python3 manage.py startapp catalog(mac)
+        py -3 manage.py startapp catalog(windows)
+    工程裡註冊新的應用
+        在項目的settings裡，把應用添加進INSTALLED_APPS ，就完成了註冊。
+        'catalog.apps.CatalogConfig', 
+        新的這行，詳細說明了應用配置文件在( CatalogConfig) /locallibrary/catalog/apps.py  裡，
+        當你創建應用時就完成了這個過程。
+    在settings.py配置sqlite資料庫
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
+    其他設置：
+        時區
+            TIME_ZONE = 'Asia/Taipei'
+    為每個應用分配url
+        urls.py
+
+    測試網站框架
+        在運行前，我們應該先運行數據庫遷移。這會更新我們的數據庫並且包含所有安裝的應用（同時去除一些警告）。
+        運行資料庫遷移
+            Django使用對象關係映射器（ORM），將Django代碼中的模型定義，
+            映射到底層資料庫使用的數據結構。當我們更改模型定義時，Django會跟踪更改，
+            並創建資料庫遷移腳本(位於 /locallibrary/catalog/migrations/ )，
+            來自動遷移資料庫中的底層數據結構。
+            運行以下命令，來定義資料庫中這些模型的表（確認你位於包含 manage.py 的目錄中):
+                python3 manage.py makemigrations
+                python3 manage.py migrate
+                (重要: 每次模型改變，都需要運行以上命令，來影響需要存放的數據結構（包括添加和刪除整個模型和單個字段）。)
+
+    運行網站
+        默認情況下，服務器會開通（http://127.0.0.1:8000/),但你也可以選擇其他端口。
+        通過如下runserver命令，運行開發網頁服務器。（同樣的要在manage.py的目錄）
+        python3 manage.py runserver
+
+3. 使用模型
+    https://developer.mozilla.org/zh-TW/docs/Learn/Server-side/Django/Models
+
+
+
+
+django-admin startproject Project
+https://medium.com/bandai%E7%9A%84%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/07-25-%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-%E6%89%8B%E6%8A%8A%E6%89%8Bdjango%E5%88%9D%E9%AB%94%E9%A9%97-bb2eefd5d46a
+建立 Django App
+先建立一個觀念，在 Django 中，通常我們會依照「功能」去細分每一個 App ，
+ 例如打成 crawler ，代表他是管理「爬蟲」 的部份。
+ python manage.py startapp crawler
+ 請在 settings.py 裡面的 INSTALLED_APPS 加入 crawler 
+
+ Views
+請再你的APP下方新增一個 templates 資料夾，裡面在新增一個 hello_django.html
+hello_django.html 裡面的第 8 行，會透過 views.py 傳值過來。
+再將 urls.py 裡面增加一些程式碼
+(app-setting)
+(templates-views-urls)
+(templates-setting)
+
+
+Models
+https://medium.com/bandai%E7%9A%84%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98/%E6%89%8B%E6%8A%8A%E6%89%8B%E7%A8%8B%E5%BC%8F%E5%AF%A6%E4%BD%9C%E5%88%86%E4%BA%AB%E7%B3%BB%E5%88%97-django-sqlite%E8%B3%87%E6%96%99%E5%BA%AB%E8%A8%AD%E5%AE%9A%E9%9B%86%E7%B0%A1%E5%96%AE%E6%93%8D%E4%BD%9C-359529fdedbe
+Django 預設是使用 SQLite ，如果想要修改為其他的資料庫，可以在 settings.py 裡面進行修改。
+設定完models.py
+python manage.py makemigrations
+python manage.py migrate
+
+makemigrations ： 會幚你建立一個檔案，去記錄你更新了哪些東西。
+
+migrate ： 根據 makemigrations 建立的檔案，去更新你的 DATABASE 。
+
+執行完上面的指令之後，
+
+你可以使用SQLiteBrowser 或 PyCharm 觀看 DATABASE，
+
+Admin Site
+Django 內建有後台管理介面。
+
+請先確定 settings.py 裡的 INSTALLED_APPS 裡有 django.contrib.admin
+設定admin的url
+使用cmd建立超級使用者
+python manage.py createsuperuser
+
+註冊 model
+我們可以註冊 model，讓後台可以操作 database
+在admin.py裡註冊model
+
+Django ORM
+資料庫設定好了，接下來我們要來玩玩資料庫了
+先了解什麼是 CRUD ，他分別代表 Create, Retrieve, Update, Delete，
+Django QuerySet API 可以讓你簡單的處理 CRUD 。
+
+這地方我還不太了解怎麼用python console去操作
+Create
+Music.objects.create(song=’song1', singer=’SKE48')
+Music.objects.create()
+Read
+Music.objects.all()
+Music.objects.get(pk=3)
+Music.objects.filter(id=1)
+使用的時候objects.all()是回傳回一個list
+data=Music.objects.all()
+如果我們要單獨的項目，可以這樣操作
+for i in range(len(data1)):
+print(data[i].singer)
+讓所有在Music裡面的singer資訊全部印出來。
+
+Update
+data=Music.objects.filter(id=1)
+data.update(song=’song_update’)
+
+Delete
+data=Music.objects.filter(id=4)
+data.delete()
+
+
+先在主目錄新增media,templates
+新增web app
+在web 中新增templates
+創建首頁、作品集的html
+設計model
+設計完之後輸入以下指令
+python manage.py makemigrations
+python manage.py migrate
+把views加入相關邏輯,引入model
+新建app URLS加入URLS
+在主目錄的urls include app的連結、相關的靜態檔案
+在主目錄settings的地方設定INSTALLED_APPS,MEDIA_URL,MEDIA_ROOT
+python manage.py makemigrations
+python manage.py migrate
+啟動app
+
+請先確定 settings.py 裡的 INSTALLED_APPS 裡有 django.contrib.admin
+設定admin的url
+使用cmd建立超級使用者
+python manage.py createsuperuser

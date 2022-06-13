@@ -1,0 +1,10 @@
+使用方法
+cd Draw
+python3 manage.py runserver
+開啟伺服器
+
+目前伺服器可用URL
+index/
+gallery/
+
+

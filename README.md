@@ -13,7 +13,8 @@ gallery/--查看所有已上傳的作品
 
 
 頁面展示:
-![image](https://github.com/lexsaints/powershell/blob/master/IMG/ps2.png)
+![image](https://github.com/IceTeaOxO/Django_gallery_web/blob/main/index.jpg)
+![image](https://github.com/IceTeaOxO/Django_gallery_web/blob/main/gallery.jpg)
 
 發想動機：
 想製作一個可以跳脫繪畫舒適圈的功能，藉由隨機的關鍵字作為作品發想的靈感，挑戰不一樣的畫風、畫法
